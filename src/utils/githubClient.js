@@ -44,7 +44,7 @@ export class GithubRepositoryNotFoundError extends ApolloError {
 
   static fromNames(ownerName, repositoryName) {
     return new GithubRepositoryNotFoundError(
-      `GitHub repository ${repositoryName} owned by ${ownerName} does not exists`,
+      `GitHub repository ${repositoryName} owned by ${ownerName} does not exist`,
       { ownerName, repositoryName },
     );
   }
