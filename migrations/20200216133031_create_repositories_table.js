@@ -1,5 +1,5 @@
-exports.up = function(knex) {
-  return knex.schema.createTable('repositories', table => {
+export function up(knex) {
+  return knex.schema.createTable('repositories', (table) => {
     table.text('id').primary();
     table.text('name');
     table.text('owner_name');
@@ -8,8 +8,8 @@ exports.up = function(knex) {
 
     table.index(['owner_name', 'name']);
   });
-};
+}
 
-exports.down = function(knex) {
+export function down(knex) {
   return knex.schema.dropTableIfExists('repositories');
-};
+}

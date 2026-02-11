@@ -2,10 +2,11 @@
   "name": "rate-repository-api",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node -r esm ./src/index.js",
-    "start:dev": "nodemon -r esm ./src/index.js",
+    "start": "node ./src/index.js",
+    "start:dev": "node --watch ./src/index.js",
     "lint": "eslint ./src",
     "test": "jest .",
     "migrate:make": "knex migrate:make",
@@ -44,7 +45,6 @@
     "date-fns": "^2.9.0",
     "dotenv": "^11.0.0",
     "es6-error": "^4.1.1",
-    "esm": "^3.2.25",
     "graphql": "^16.2.0",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
@@ -70,7 +70,6 @@
     "husky": "^4.2.3",
     "jest": "^27.4.7",
     "lint-staged": "^10.0.7",
-    "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
   }
 }

@@ -1,6 +1,6 @@
 const oneHour = 1000 * 60 * 60;
 
-const createDateColumns = date => ({
+const createDateColumns = (date) => ({
   created_at: date,
   updated_at: date,
 });
@@ -28,7 +28,7 @@ const createIdColumns = (userId, repositoryId) => ({
   repository_id: repositoryId,
 });
 
-exports.seed = async knex => {
+export const seed = async (knex) => {
   await knex('reviews').del();
 
   await knex('reviews').insert([

@@ -1,23 +1,24 @@
 import { gql } from 'apollo-server';
-import { merge } from 'lodash';
+import lodash from 'lodash';
+const { merge } = lodash;
 
-import Repository from './types/Repository';
-import repositoryQuery from './queries/repository';
-import User from './types/User';
-import createUserMutation from './mutations/createUser';
-import authenticateMutation from './mutations/authenticate';
-import usersQuery from './queries/users';
-import meQuery from './queries/me';
-import repositoriesQuery from './queries/repositories';
-import PageInfo from './types/PageInfo';
-import RepositoryConnection from './types/RepositoryConnection';
-import OrderDirection from './enums/OrderDirection';
-import createReviewMutation from './mutations/createReview';
-import Review from './types/Review';
-import ReviewConnection from './types/ReviewConnection';
-import UserConnection from './types/UserConnection';
-import deleteReviewMutation from './mutations/deleteReview';
-import DateTime from './scalars/DateTime';
+import Repository from './types/Repository.js';
+import repositoryQuery from './queries/repository.js';
+import User from './types/User.js';
+import createUserMutation from './mutations/createUser.js';
+import authenticateMutation from './mutations/authenticate.js';
+import usersQuery from './queries/users.js';
+import meQuery from './queries/me.js';
+import repositoriesQuery from './queries/repositories.js';
+import PageInfo from './types/PageInfo.js';
+import RepositoryConnection from './types/RepositoryConnection.js';
+import OrderDirection from './enums/OrderDirection.js';
+import createReviewMutation from './mutations/createReview.js';
+import Review from './types/Review.js';
+import ReviewConnection from './types/ReviewConnection.js';
+import UserConnection from './types/UserConnection.js';
+import deleteReviewMutation from './mutations/deleteReview.js';
+import DateTime from './scalars/DateTime.js';
 
 const rootTypeDefs = gql`
   type Query {

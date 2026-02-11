@@ -1,9 +1,9 @@
 import http from 'http';
 
-import logger from './utils/logger';
-import { API_PORT, APOLLO_PORT } from './config';
-import createApolloServer from './apolloServer';
-import app from './app';
+import logger from './utils/logger.js';
+import { API_PORT, APOLLO_PORT } from './config.js';
+import createApolloServer from './apolloServer.js';
+import app from './app.js';
 
 const startServer = async () => {
   const httpServer = http.createServer(app);

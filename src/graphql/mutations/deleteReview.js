@@ -1,6 +1,6 @@
 import { gql, UserInputError, ForbiddenError } from 'apollo-server';
 
-import Review from '../../models/Review';
+import Review from '../../models/Review.js';
 
 export const typeDefs = gql`
   extend type Mutation {

@@ -1,10 +1,10 @@
 import { ApolloServer, toApolloError, ApolloError } from 'apollo-server';
 import { ValidationError } from 'yup';
 
-import AuthService from './utils/authService';
-import createDataLoaders from './utils/createDataLoaders';
-import logger from './utils/logger';
-import { resolvers, typeDefs } from './graphql/schema';
+import AuthService from './utils/authService.js';
+import createDataLoaders from './utils/createDataLoaders.js';
+import logger from './utils/logger.js';
+import { resolvers, typeDefs } from './graphql/schema.js';
 
 const apolloErrorFormatter = (error) => {
   logger.error(error);

@@ -1,6 +1,6 @@
 import createKnex from 'knex';
 
-import { KNEX_CONFIG } from '../config';
+import { KNEX_CONFIG } from '../config.js';
 
 const knex = createKnex(KNEX_CONFIG);
 

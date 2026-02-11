@@ -1,6 +1,6 @@
 const oneHour = 1000 * 60 * 60;
 
-const createDateColumns = date => ({
+const createDateColumns = (date) => ({
   created_at: date,
   updated_at: date,
 });
@@ -11,7 +11,7 @@ const createColumns = (ownerName, repositoryName) => ({
   name: repositoryName,
 });
 
-exports.seed = async knex => {
+export const seed = async (knex) => {
   await knex('repositories').del();
 
   await knex('repositories').insert([

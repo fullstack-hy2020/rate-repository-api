@@ -4,10 +4,10 @@ import * as yup from 'yup';
 import {
   githubClient,
   GithubRepositoryNotFoundError,
-} from '../../utils/githubClient';
+} from '../../utils/githubClient.js';
 
-import Repository from '../../models/Repository';
-import Review from '../../models/Review';
+import Repository from '../../models/Repository.js';
+import Review from '../../models/Review.js';
 
 export const typeDefs = gql`
   input CreateReviewInput {

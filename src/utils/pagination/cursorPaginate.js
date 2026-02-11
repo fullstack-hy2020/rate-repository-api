@@ -1,10 +1,11 @@
-import { isNumber } from 'lodash';
+import lodash from 'lodash';
+const { isNumber } = lodash;
 
-import normalizeOrderBy from './normalizeOrderBy';
-import reverseOrderBy from './reverseOrderBy';
-import serializeCursor from './serializeCursor';
-import parseCursor from './parseCursor';
-import cursorWhere from './cursorWhere';
+import normalizeOrderBy from './normalizeOrderBy.js';
+import reverseOrderBy from './reverseOrderBy.js';
+import serializeCursor from './serializeCursor.js';
+import parseCursor from './parseCursor.js';
+import cursorWhere from './cursorWhere.js';
 
 const getValidLimitOrFail = ({ first, last }) => {
   const limit = isNumber(first) ? first : isNumber(last) ? last : 30;
@@ -47,23 +48,14 @@ const cursorPaginate = async (
     : null;
 
   const cursorQuery = cursor
-    ? builder.clone().andWhere(b => cursorWhere(b, orderBy, cursor))
+    ? builder.clone().andWhere((b) => cursorWhere(b, orderBy, cursor))
     : builder;
 
-  const paginationQuery = cursorQuery
-    .clone()
-    .limit(limit)
-    .orderBy(orderBy);
+  const paginationQuery = cursorQuery.clone().limit(limit).orderBy(orderBy);
 
-  const cursorCountQuery = cursorQuery
-    .clone()
-    .count({ count: '*' })
-    .first();
+  const cursorCountQuery = cursorQuery.clone().count({ count: '*' }).first();
 
-  const totalCountQuery = builder
-    .clone()
-    .count({ count: '*' })
-    .first();
+  const totalCountQuery = builder.clone().count({ count: '*' }).first();
 
   const [rows, cursorCountObject, totalCountObject] = await Promise.all([
     paginationQuery,
@@ -88,7 +80,7 @@ const cursorPaginate = async (
     (Boolean(before) && remaining > 0) ||
     (!before && totalCount - cursorCount > 0);
 
-  const edges = rows.map(node => ({
+  const edges = rows.map((node) => ({
     node,
     cursor: createCursor(node, orderBy),
   }));

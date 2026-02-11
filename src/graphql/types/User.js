@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 import * as yup from 'yup';
 
-import Review from '../../models/Review';
+import Review from '../../models/Review.js';
 
 export const typeDefs = gql`
   type User {
@@ -15,11 +15,7 @@ export const typeDefs = gql`
 
 const argsSchema = yup.object({
   after: yup.string(),
-  first: yup
-    .number()
-    .min(1)
-    .max(30)
-    .default(30),
+  first: yup.number().min(1).max(30).default(30),
 });
 
 export const resolvers = {
