@@ -1,10 +1,13 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { knexSnakeCaseMappers } from 'objection';
 
 import knexfile from '../knexfile.js';
 
-dotenv.config({ path: path.resolve(import.meta.dirname, '..', '.env') });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 export const API_PORT = process.env.PORT || 5000;
 
