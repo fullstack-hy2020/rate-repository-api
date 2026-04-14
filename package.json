@@ -39,7 +39,7 @@
     "apollo-server": "^3.3.0",
     "apollo-server-core": "^3.3.0",
     "apollo-server-koa": "^3.3.0",
-    "axios": "^0.24.0",
+    "axios": "^1.15.0",
     "bcrypt": "^5.0.0",
     "dataloader": "^2.0.0",
     "date-fns": "^2.9.0",
