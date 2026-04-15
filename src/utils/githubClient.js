@@ -65,8 +65,12 @@ export class GithubClient {
     this.cache = new LRUCache({ max: 100, maxAge: cacheMaxAge });
   }
 
+  hasCredentials() {
+    return Boolean(this.clientId && this.clientSecret);
+  }
+
   getAuth() {
-    return this.clientId && this.clientSecret
+    return this.hasCredentials()
       ? {
           username: this.clientId,
           password: this.clientSecret,
@@ -125,6 +129,32 @@ export class GithubClient {
       }
 
       throw error;
+    }
+  }
+
+  async validateCredentials({ timeout = 5000 } = {}) {
+    if (!this.hasCredentials()) {
+      return {
+        configured: false,
+        valid: false,
+      };
+    }
+
+    try {
+      const response = await this.getRequest('/rate_limit', { timeout });
+
+      return {
+        configured: true,
+        valid: true,
+        status: response.status,
+      };
+    } catch (error) {
+      return {
+        configured: true,
+        valid: false,
+        status: error.extensions?.response?.status,
+        error,
+      };
     }
   }
 }
