@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"rate-repository-api:latest","namespace":"ohtuprojekti-staging"},"fieldPath":"spec.template.spec.containers[?(@.name==\"rate-repository-api\")].image","pause":"false"}]
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: api
+  name: rate-repository-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rate-repository-api
+  template:
+    metadata:
+      labels:
+        app: rate-repository-api
+        app.kubernetes.io/name: rate-repository-api
+        app.kubernetes.io/part-of: rate-repository-api
+        app.kubernetes.io/component: api
+    spec:
+      containers:
+        - name: rate-repository-api
+          image: rate-repository-api:latest
+          ports:
+            - containerPort: 4000
+          env:
+            - name: APOLLO_PORT
+              value: '4000'
+          envFrom:
+            - secretRef:
+                name: rate-repository-api
+          resources:
+            limits:
+              cpu: '200m'
+              memory: '500Mi'
+            requests:
+              cpu: '20m'
+              memory: '100Mi'

@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rate-repository-api-restarter
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: maintenance
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rate-repository-api-restarter
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: maintenance
+rules:
+  - apiGroups: ['apps']
+    resources: ['deployments']
+    resourceNames: ['rate-repository-api']
+    verbs: ['get', 'patch']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rate-repository-api-restarter
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: maintenance
+subjects:
+  - kind: ServiceAccount
+    name: rate-repository-api-restarter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rate-repository-api-restarter
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rate-repository-api-daily-restart
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: maintenance
+spec:
+  schedule: '0 0 * * *'
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: rate-repository-api
+            app.kubernetes.io/name: rate-repository-api
+            app.kubernetes.io/part-of: rate-repository-api
+            app.kubernetes.io/component: maintenance
+        spec:
+          serviceAccountName: rate-repository-api-restarter
+          restartPolicy: OnFailure
+          containers:
+            - name: oc
+              image: registry.redhat.io/openshift4/ose-cli:latest
+              command:
+                - /bin/sh
+                - -c
+                - oc rollout restart deployment/rate-repository-api

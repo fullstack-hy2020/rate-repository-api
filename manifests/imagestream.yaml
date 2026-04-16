@@ -1,0 +1,22 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+
+metadata:
+  name: rate-repository-api
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: api
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: vesajo/rate-repository-api:latest
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Local

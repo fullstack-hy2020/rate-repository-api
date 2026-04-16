@@ -1,0 +1,22 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: rate-repository-api
+  namespace: ohtuprojekti-staging
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: api
+    type: external
+spec:
+  host: rate-repository-api.ext.ocp-prod-0.k8s.it.helsinki.fi
+  port:
+    targetPort: 4000
+  to:
+    kind: Service
+    name: rate-repository-api
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

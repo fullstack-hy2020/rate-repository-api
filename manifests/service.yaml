@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rate-repository-api
+  labels:
+    app: rate-repository-api
+    app.kubernetes.io/name: rate-repository-api
+    app.kubernetes.io/part-of: rate-repository-api
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    app: rate-repository-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4000
+  type: ClusterIP
