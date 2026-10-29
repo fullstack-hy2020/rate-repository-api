@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from 'graphql-tag';
 import lodash from 'lodash';
 const { merge } = lodash;
 

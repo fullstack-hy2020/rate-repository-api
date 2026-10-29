@@ -1,5 +1,5 @@
 import LRUCache from 'lru-cache';
-import { ApolloError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
 import lodash from 'lodash';
 const { pick, get } = lodash;
 import axios from 'axios';
@@ -17,9 +17,9 @@ const HTTP_CLIENT_ERROR = Symbol();
 const isNotFoundError = (error) =>
   get(error[HTTP_CLIENT_ERROR], 'response.status') === 404;
 
-export class GithubError extends ApolloError {
+export class GithubError extends GraphQLError {
   constructor(message, properties) {
-    super(message, 'GITHUB_API_FAILURE', properties);
+    super(message, { extensions: { ...properties, code: 'GITHUB_API_FAILURE' } });
   }
 
   static fromHttpClientError(error) {
@@ -38,9 +38,11 @@ export class GithubError extends ApolloError {
   }
 }
 
-export class GithubRepositoryNotFoundError extends ApolloError {
+export class GithubRepositoryNotFoundError extends GraphQLError {
   constructor(message, properties) {
-    super(message, 'GITHUB_REPOSITORY_NOT_FOUND', properties);
+    super(message, {
+      extensions: { ...properties, code: 'GITHUB_REPOSITORY_NOT_FOUND' },
+    });
   }
 
   static fromNames(ownerName, repositoryName) {

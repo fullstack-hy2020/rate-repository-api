@@ -66,9 +66,9 @@ spec:
           serviceAccountName: rate-repository-api-restarter
           restartPolicy: OnFailure
           containers:
-            - name: oc
-              image: registry.redhat.io/openshift4/ose-cli:latest
+            - name: kubectl
+              image: alpine/k8s:1.37.1
               command:
                 - /bin/sh
                 - -c
-                - oc rollout restart deployment/rate-repository-api
+                - kubectl rollout restart deployment/rate-repository-api

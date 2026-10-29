@@ -1,4 +1,5 @@
-import { gql, ApolloError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
+import { gql } from 'graphql-tag';
 import * as yup from 'yup';
 
 import {
@@ -25,9 +26,9 @@ export const typeDefs = gql`
   }
 `;
 
-class RepositoryAlreadyReviewedError extends ApolloError {
+class RepositoryAlreadyReviewedError extends GraphQLError {
   constructor(message = 'User has already reviewed this repository') {
-    super(message, 'REPOSITORY_ALREADY_REVIEWED');
+    super(message, { extensions: { code: 'REPOSITORY_ALREADY_REVIEWED' } });
   }
 }
 

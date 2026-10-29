@@ -1,4 +1,5 @@
-import { gql, UserInputError, ForbiddenError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
+import { gql } from 'graphql-tag';
 
 import Review from '../../models/Review.js';
 
@@ -19,11 +20,15 @@ export const resolvers = {
       const review = await Review.query().findById(args.id);
 
       if (!review) {
-        throw new UserInputError(`Review with id ${args.id} does not exist`);
+        throw new GraphQLError(`Review with id ${args.id} does not exist`, {
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
       }
 
       if (review.userId !== currentUser.id) {
-        throw new ForbiddenError('User is not authorized to delete the review');
+        throw new GraphQLError('User is not authorized to delete the review', {
+          extensions: { code: 'FORBIDDEN' },
+        });
       }
 
       await Review.query().findById(args.id).delete();

@@ -1,5 +1,5 @@
 import { GraphQLScalarType, Kind } from 'graphql';
-import { gql } from 'apollo-server';
+import { gql } from 'graphql-tag';
 import { isValid, isDate } from 'date-fns';
 
 const isValidDateTime = value => {

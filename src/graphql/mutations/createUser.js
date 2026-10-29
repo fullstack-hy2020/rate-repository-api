@@ -1,4 +1,5 @@
-import { gql, ApolloError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
+import { gql } from 'graphql-tag';
 import * as yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
@@ -19,9 +20,9 @@ export const typeDefs = gql`
   }
 `;
 
-class UsernameTakenError extends ApolloError {
+class UsernameTakenError extends GraphQLError {
   constructor(message, properties) {
-    super(message, 'USERNAME_TAKEN', properties);
+    super(message, { extensions: { ...properties, code: 'USERNAME_TAKEN' } });
   }
 
   static fromUsername(username) {

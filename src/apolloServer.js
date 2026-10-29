@@ -1,4 +1,6 @@
-import { ApolloServer, toApolloError, ApolloError } from 'apollo-server';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { GraphQLError } from 'graphql';
 import { ValidationError } from 'yup';
 
 import AuthService from './utils/authService.js';
@@ -6,49 +8,64 @@ import createDataLoaders from './utils/createDataLoaders.js';
 import logger from './utils/logger.js';
 import { resolvers, typeDefs } from './graphql/schema.js';
 
-const apolloErrorFormatter = (error) => {
+const apolloErrorFormatter = (formattedError, error) => {
   logger.error(error);
 
   const { originalError } = error;
   const isGraphQLError = !(originalError instanceof Error);
 
-  let normalizedError = new ApolloError(
-    'Something went wrong',
-    'INTERNAL_SERVER_ERROR',
-  );
-
   if (originalError instanceof ValidationError) {
-    normalizedError = toApolloError(error, 'BAD_USER_INPUT');
-  } else if (error.originalError instanceof ApolloError || isGraphQLError) {
-    normalizedError = error;
+    const badUserInputError = {
+      ...formattedError,
+      extensions: { ...formattedError.extensions, code: 'BAD_USER_INPUT' },
+    };
+
+    return badUserInputError;
   }
 
-  return normalizedError;
+  if (originalError instanceof GraphQLError || isGraphQLError) {
+    return formattedError;
+  }
+
+  const internalServerError = {
+    message: 'Something went wrong',
+    extensions: { code: 'INTERNAL_SERVER_ERROR' },
+  };
+
+  return internalServerError;
 };
 
-const createApolloServer = () => {
-  return new ApolloServer({
+const createContext = async ({ req }) => {
+  const authorization = req.headers.authorization;
+
+  const accessToken = authorization
+    ? authorization.split(' ')[1]
+    : undefined;
+  const dataLoaders = createDataLoaders();
+
+  const context = {
+    authService: new AuthService({
+      accessToken,
+      dataLoaders,
+    }),
+    dataLoaders,
+  };
+
+  return context;
+};
+
+const startApolloServer = async ({ port }) => {
+  const apolloServer = new ApolloServer({
     resolvers,
     typeDefs,
-    cache: 'bounded',
+    csrfPrevention: false,
     formatError: apolloErrorFormatter,
-    context: ({ req }) => {
-      const authorization = req.headers.authorization;
+  });
 
-      const accessToken = authorization
-        ? authorization.split(' ')[1]
-        : undefined;
-      const dataLoaders = createDataLoaders();
-
-      return {
-        authService: new AuthService({
-          accessToken,
-          dataLoaders,
-        }),
-        dataLoaders,
-      };
-    },
+  await startStandaloneServer(apolloServer, {
+    listen: { port },
+    context: createContext,
   });
 };
 
-export default createApolloServer;
+export default startApolloServer;

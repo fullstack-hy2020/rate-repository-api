@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-koa';
+import { ApolloServer } from '@apollo/server';
 
 import { typeDefs, resolvers } from '../schema.js';
 

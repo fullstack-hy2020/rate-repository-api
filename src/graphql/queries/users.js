@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from 'graphql-tag';
 import * as yup from 'yup';
 import User from '../../models/User.js';
 

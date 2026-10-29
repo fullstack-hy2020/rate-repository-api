@@ -2,7 +2,7 @@ import http from 'http';
 
 import logger from './utils/logger.js';
 import { API_PORT, APOLLO_PORT } from './config.js';
-import createApolloServer from './apolloServer.js';
+import startApolloServer from './apolloServer.js';
 import app from './app.js';
 import githubClient from './utils/githubClient.js';
 
@@ -29,9 +29,7 @@ const logGithubCredentialStatus = async () => {
 const startServer = async () => {
   const httpServer = http.createServer(app);
 
-  const apolloServer = createApolloServer();
-
-  await apolloServer.listen({ port: APOLLO_PORT });
+  await startApolloServer({ port: APOLLO_PORT });
 
   httpServer.on('request', app.callback());
 

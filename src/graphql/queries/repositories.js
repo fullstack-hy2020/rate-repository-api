@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from 'graphql-tag';
 import { raw } from 'objection';
 import * as yup from 'yup';
 

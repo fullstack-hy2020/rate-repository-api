@@ -35,17 +35,16 @@
   },
   "homepage": "https://github.com/Kaltsoon/rate-repository-api#readme",
   "dependencies": {
-    "@koa/cors": "^3.0.0",
-    "apollo-server": "^3.3.0",
-    "apollo-server-core": "^3.3.0",
-    "apollo-server-koa": "^3.3.0",
+    "@apollo/server": "^5.5.1",
+    "@koa/cors": "^5.0.0",
     "axios": "^1.15.0",
     "bcrypt": "^6.0.0",
     "dataloader": "^2.0.0",
     "date-fns": "^2.9.0",
     "dotenv": "^11.0.0",
     "es6-error": "^4.1.1",
-    "graphql": "^16.2.0",
+    "graphql": "^16.11.0",
+    "graphql-tag": "^2.12.7",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
     "koa": "^2.11.0",
@@ -55,9 +54,9 @@
     "lodash": "^4.17.15",
     "lru-cache": "^6.0.0",
     "objection": "^3.0.1",
-    "sqlite3": "^5.1.7",
+    "sqlite3": "^6.0.1",
     "through2": "^4.0.2",
-    "uuid": "^8.3.2",
+    "uuid": "^14.0.3",
     "winston": "^3.2.1",
     "yup": "^0.32.8"
   },
@@ -69,8 +68,11 @@
     "eslint": "^8.6.0",
     "eslint-plugin-jest": "^25.3.4",
     "husky": "^4.2.3",
-    "jest": "^27.4.7",
+    "jest": "^30.5.2",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.1"
+  },
+  "jest": {
+    "transformIgnorePatterns": ["/node_modules/(?!uuid/)"]
   }
 }

@@ -1,4 +1,5 @@
-import { gql, UserInputError } from 'apollo-server';
+import { GraphQLError } from 'graphql';
+import { gql } from 'graphql-tag';
 import * as yup from 'yup';
 import bcrypt from 'bcrypt';
 
@@ -43,13 +44,17 @@ export const resolvers = {
       const user = await User.query().findOne({ username });
 
       if (!user) {
-        throw new UserInputError('Invalid username or password');
+        throw new GraphQLError('Invalid username or password', {
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
       }
 
       const match = await bcrypt.compare(password, user.password);
 
       if (!match) {
-        throw new UserInputError('Invalid username or password');
+        throw new GraphQLError('Invalid username or password', {
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
       }
 
       return {
