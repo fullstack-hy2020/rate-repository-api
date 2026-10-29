@@ -1,14 +1,12 @@
-FROM registry.access.redhat.com/ubi9/nodejs-22 AS builder
+FROM node:24-alpine AS builder
 
-USER 0
 WORKDIR /app
 
-RUN dnf install -y python3 make gcc-c++ \
-	&& dnf clean all \
-	&& rm -rf /var/cache/dnf
+RUN apk add --no-cache python3 make g++
 
-COPY package*.json ./
+COPY package*.json .npmrc ./
 RUN npm ci --omit=dev \
+	&& npm rebuild sqlite3 bcrypt --ignore-scripts=false \
 	&& npm cache clean --force
 
 COPY src ./src
@@ -16,7 +14,7 @@ COPY migrations ./migrations
 COPY seeds ./seeds
 COPY knexfile.js ./
 
-FROM registry.access.redhat.com/ubi9/nodejs-22-minimal
+FROM node:24-alpine
 
 WORKDIR /app
 

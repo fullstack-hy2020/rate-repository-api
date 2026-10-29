@@ -1,0 +1,7 @@
+services:
+  api:
+    build: .
+    image: rate-repository-api:node24
+    env_file: .env
+    ports:
+      - '4000:4000'
